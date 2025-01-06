@@ -26,7 +26,21 @@ body {
     background-color: #769656;
 }
 
+.highlightYellow{
+    background-color: #f7f769;
+}
+
 .piece{
     width: 100%;
     cursor: pointer;
+}
+
+.highlight{
+    width: 32px;
+    height: 32px;
+    display: block;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.17);
 }

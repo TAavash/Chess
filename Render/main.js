@@ -1,5 +1,6 @@
 import * as piece from "../Data/pieces.js";
 import { ROOT_DIV } from "../Helper/constants.js";
+import { globalState } from "../index.js";
 
 // use when you want to render pieces on board
 function pieceRender(data) {
@@ -19,7 +20,7 @@ function pieceRender(data) {
       }
     });
   });
-} 
+}
 
 //use when you want to render board for first time when game starts
 function initGameRender(data) {
@@ -99,4 +100,42 @@ function initGameRender(data) {
   pieceRender(data);
 }
 
-export { initGameRender };
+//render highlight circle
+function renderHighlight(squareId) {
+  const highlightSpan = document.createElement("span");
+  highlightSpan.classList.add("highlight");
+  document.getElementById(squareId).appendChild(highlightSpan);
+}
+
+//clear all highlights from the board
+function clearHighlight() {
+  const flatData = globalState.flat();
+  flatData.forEach((el) => {
+    if (el.highlighted) {
+      document.getElementById(el.id).innerHTML = "";
+      el.highlighted = false;
+    }
+  });
+}
+
+function selfHighlight(piece) {
+  document
+    .getElementById(piece.current_position)
+    .classList.add("highlightYellow");
+}
+
+function clearPreviousSelfHighlight(piece) {
+  if (piece) {
+    document
+      .getElementById(piece.current_position)
+      .classList.remove("highlightYellow");
+  }
+}
+
+export {
+  initGameRender,
+  renderHighlight,
+  clearHighlight,
+  selfHighlight,
+  clearPreviousSelfHighlight,
+};
