@@ -132,10 +132,37 @@ function clearPreviousSelfHighlight(piece) {
   }
 }
 
+//move element to square with id
+function moveElement(piece, id) {
+  const flatData = globalState.flat();
+
+  flatData.forEach((el) => {
+    if (el.id == piece.current_position) {
+      delete el.piece;
+    }
+
+    if (el.id == id) {
+      el.piece = piece;
+    }
+  });
+
+  clearHighlight();
+  const previousPiece = document.getElementById(piece.current_position);
+  previousPiece.classList.remove("highlightYellow");
+  
+  const currentPiece = document.getElementById(id);
+
+  currentPiece.innerHTML = previousPiece.innerHTML
+  previousPiece.innerHTML = "";
+
+  piece.current_position = id;
+}
+
 export {
   initGameRender,
   renderHighlight,
   clearHighlight,
   selfHighlight,
   clearPreviousSelfHighlight,
+  moveElement,
 };
