@@ -111,6 +111,10 @@ function renderHighlight(squareId) {
 function clearHighlight() {
   const flatData = globalState.flat();
   flatData.forEach((el) => {
+    if (el.captureHighlight) {
+      document.getElementById(el.id).classList.remove("captureColor");
+    }
+
     if (el.highlighted) {
       document.getElementById(el.id).innerHTML = "";
       el.highlighted = false;
@@ -149,10 +153,10 @@ function moveElement(piece, id) {
   clearHighlight();
   const previousPiece = document.getElementById(piece.current_position);
   previousPiece.classList.remove("highlightYellow");
-  
+
   const currentPiece = document.getElementById(id);
 
-  currentPiece.innerHTML = previousPiece.innerHTML
+  currentPiece.innerHTML = previousPiece.innerHTML;
   previousPiece.innerHTML = "";
 
   piece.current_position = id;

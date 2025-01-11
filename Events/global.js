@@ -5,6 +5,7 @@ import { clearHighlight } from "../Render/main.js";
 import { selfHighlight } from "../Render/main.js";
 import { clearPreviousSelfHighlight } from "../Render/main.js";
 import { moveElement } from "../Render/main.js";
+import { checkPieceOfOpponentOnElement } from "../Helper/commonHelper.js";
 
 //highlighted or not
 let highlight_state = false;
@@ -17,6 +18,9 @@ let moveState = null;
 
 //white pawn events
 function WhitePawnClick({ piece }) {
+  
+  clearPreviousSelfHighlight(selfHighlightState);
+
   //if clicked on same element twice
   if (piece == selfHighlightState) {
     clearPreviousSelfHighlight(selfHighlightState);
@@ -42,8 +46,6 @@ function WhitePawnClick({ piece }) {
       `${current_pos[0]}${Number(current_pos[1]) + 2}`,
     ];
 
-    //clear board for any previous hightlight
-    clearHighlight();
 
     hightlightSquareIds.forEach((hightlight) => {
       globalState.forEach((row) => {
@@ -55,16 +57,22 @@ function WhitePawnClick({ piece }) {
       });
     });
   } else {
-    const col1 = `${String.fromCharCode(current_pos[0].charCodeAt(0) - 1)}`;
-    const col2 = `${String.fromCharCode(current_pos[0].charCodeAt(0) + 1)}`;
+    const col1 = `${String.fromCharCode(current_pos[0].charCodeAt(0) - 1)}${
+      Number(current_pos[1]) + 1
+    }`;
+    const col2 = `${String.fromCharCode(current_pos[0].charCodeAt(0) + 1)}${
+      Number(current_pos[1]) + 1
+    }`;
 
-    console.log(col1, col2);
-
-    const captureIds = [];
+    const captureIds = [col1, col2];
 
     const hightlightSquareIds = [
       `${current_pos[0]}${Number(current_pos[1]) + 1}`,
     ];
+
+    captureIds.forEach((element) => {
+      checkPieceOfOpponentOnElement(element, "white");
+    });
 
     //clear board for any previous hightlight
     clearHighlight();
@@ -167,7 +175,6 @@ function GlobalEvent() {
           moveElement(moveState, id);
         }
 
-        clearPreviousSelfHighlight(selfHighlightState);
       } else {
         clearHighlight();
         clearPreviousSelfHighlight(selfHighlightState);
